@@ -1,0 +1,1 @@
+Our mechanical design aims to provide the momentum needed for regenerative breaking. Providing ample energy to be regernated by the system. There is a 1:2 gear ratio from the motor to the wheel, to lower the rpm for saftey reasons.
