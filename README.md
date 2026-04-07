@@ -12,7 +12,7 @@ The objective of this project is to design a regenerative braking system capable
 ## System Architecture
 The system operates by switching a PMDC motor from motoring mode (electrical → mechanical) to generating mode (mechanical → electrical) during braking. The rotational inertia of the system drives the motor, producing electrical energy which is then conditioned and stored.
 
-![System Architecture](media\images\system_architechture.png) 
+![System Architecture](media/images/system_architechture.png) 
 
 ## Mechanical Design
 The mechanical system consists of a rotating wheel directly coupled to a PMDC motor. During braking, the kinetic energy of the rotating wheel is transferred to the motor shaft, causing it to act as a generator.
