@@ -1,5 +1,46 @@
 # Regenerative Braking System
 
+## HOW TO USE REPO
+```
+regenerative-braking-system/
+│
+├── README.md
+├── LICENSE
+│
+├── docs/   --- detailed breakdown of subsystems
+│   ├── overview.md 
+│   ├── architecture.md
+│   ├── mechanical.md 
+│   ├── electrical.md
+│   ├── calculations.md
+│   └── results.md
+│
+├── software/   --- put all code here
+│   └── Small_State_Machine.ino 
+│
+├── hardware/
+│   ├── mechanical/
+│   │   ├── cad/
+│   │   └── images/
+│   │
+│   └── electrical/
+│       ├── circuit_schematics/
+│       └── images/
+│
+├── media/  --- only final prototype images go here
+│   ├── images/
+│   │   ├── setup.jpg
+│   │   ├── demo.jpg
+│   │   ├── system_architecture.png
+│   │   └── circuit.png
+│   │
+│   └── videos/
+│       └── demo.mp4
+│
+└── references/
+    └── papers.txt
+```
+
 ## Overview
 Regenerative braking is a key technology in electric vehicles that recovers kinetic energy during deceleration and converts it into usable electrical energy. Instead of dissipating energy as heat, this system improves overall efficiency, extends driving range, and reduces mechanical wear.
 
@@ -20,7 +61,7 @@ The mechanical system consists of a rotating wheel directly coupled to a PMDC mo
 ![Image of mechanical]()
 
 For detailed design and considerations:
-- [Mechanical Design](hardware\mechanical)
+- [Mechanical Design](docs\mech.md)
 
 
 ## Electrical Design
@@ -29,12 +70,12 @@ The electrical subsystem switches the motor from driving mode or regenerative mo
 ![image of electical circuit]()
 
 For full circuit design and explanation:
-- [Electrical Design](hardware\electrical)
+- [Electrical Design](docs\elec.md)
 
 ## Software
 A PID loop is used to control the PWM of the DC-DC converter, ensuring output voltage remains constant towards the battery. Other software include the swtiching mechanism and driving PWM.
 
-- [Software Design](src)
+- [Software Design](docs\software.md)
 
 ## Results
 In Progress: The project aims to
