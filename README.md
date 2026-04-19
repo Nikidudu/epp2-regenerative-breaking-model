@@ -20,19 +20,19 @@ The system operates by switching a PMDC motor from motoring mode (electrical →
 The mechanical system consists of a rotating wheel directly coupled to a PMDC motor. During braking, the kinetic energy of the rotating wheel is transferred to the motor shaft, causing it to act as a generator.
 
 For detailed design and considerations:
-- [Mechanical Design](docs\mech.md)
+- [Mechanical Design](docs/mechanical.md)
 
 
 ## Electrical Design
 The electrical subsystem switches the motor from driving mode or regenerative mode. During driving mode, users may control the acceleration of the motor. During regenerative mode, the AC voltage is rectified and boosted into a capacitor for storage.
 
 For full circuit design and explanation:
-- [Electrical Design](docs\elec.md)
+- [Electrical Design](docs/electrical.md)
 
 ## Software
 A PID loop is used to control the PWM of the DC-DC converter, ensuring output voltage remains constant towards the battery. Other software include the swtiching mechanism and driving PWM.
 
-- [Software Design](docs\software.md)
+- [Software Design](docs/software.md)
 
 ## Results
 In Progress: The project aims to
@@ -43,7 +43,7 @@ In Progress: The project aims to
 
 Full Results:
 
-- [Results and Analysis](docs\results.md)
+- [Results and Analysis](docs/results.md)
 
 ## Final Project
 
