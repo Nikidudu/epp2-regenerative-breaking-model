@@ -48,16 +48,16 @@
 #define SMALL_RESISTANCE 2200
 #define BIG_RESISTANCE 10000
                 
-#define i_limit  1.80f // Integral windup limit based on max duty cycle and Ki
-#define PID_KP        67.0f
-#define PID_KI        12.0f
+#define i_limit  1.0f // Integral windup limit based on max duty cycle and Ki
+#define PID_KP        56.0f
+#define PID_KI        1.0f
 #define PID_KD        2.67f
-#define VOUT  12.50f      // Volts
+#define VOUT  6.6f      // Volts
 #define DUTY_MAX        7500.0f
 #define DUTY_MIN        0.0f
 
 #if CONFIG_IDF_TARGET_ESP32
-static adc_channel_t channel[1] = {ADC_CHANNEL_6}; //GPIO 34
+static adc_channel_t channel[2] = {ADC_CHANNEL_6, ADC_CHANNEL_7}; //GPIO 34, 35
 #else
 static adc_channel_t channel[2] = {ADC_CHANNEL_2, ADC_CHANNEL_3};
 #endif
@@ -66,7 +66,7 @@ static TaskHandle_t s_task_handle;
 static const char* TAG = "EXAMPLE";
 static adc_cali_handle_t cali_handle = NULL;
 
-    static void example_ledc_init(void)
+static void example_ledc_init(void)
 {
     // Prepare and then apply the LEDC PWM timer configuration
     ledc_timer_config_t ledc_timer = {
@@ -178,7 +178,8 @@ void app_main(void)
     ESP_ERROR_CHECK(adc_continuous_register_event_callbacks(handle, &cbs, NULL));
     ESP_ERROR_CHECK(adc_continuous_start(handle));
     ESP_LOGI(TAG, "i_limit: %.2f", i_limit);
-
+    uint32_t sum_raw_ch6 = 0;
+    uint32_t sum_raw_ch7 = 0;
     while (1) {
 
         /**
@@ -196,30 +197,38 @@ void app_main(void)
         while (1) {
             ret = adc_continuous_read(handle, result, EXAMPLE_READ_LEN, &ret_num, 0);
             if (ret == ESP_OK) {
-              //  ESP_LOGI("TASK", "ret is %x, ret_num is %"PRIu32" bytes", ret, ret_num);
-                uint32_t sum_raw = 0;
+                uint32_t sum_raw_ch6 = 0;   // moved inside, removed stale sum_raw
+                uint32_t sum_raw_ch7 = 0;
 
                 current_time = esp_timer_get_time();
-                dt = (current_time - last_loop_time) / 1000000.0f; // Convert microseconds to seconds
+                dt = (current_time - last_loop_time) / 1000000.0f;
                 last_loop_time = current_time;
-                int sample_count = 0;
-                int calibrated_voltage = 0;
+                int sample_count_ch6 = 0;
+                int sample_count_ch7 = 0;
+                int calibrated_voltage     = 0;
+                int calibrated_voltage_ch7 = 0;
+
                 for (int i = 0; i < ret_num; i += SOC_ADC_DIGI_RESULT_BYTES) {
                     adc_digi_output_data_t *p = (adc_digi_output_data_t*)&result[i];
-        
+                    uint8_t ch = EXAMPLE_ADC_GET_CHANNEL(p);
 
-                    sum_raw += EXAMPLE_ADC_GET_DATA(p);
-                    sample_count++;
-                    
+                    if (ch == channel[0]) {
+                        sum_raw_ch6 += EXAMPLE_ADC_GET_DATA(p);
+                        sample_count_ch6++;
+                    } else if (ch == channel[1]) {
+                        sum_raw_ch7 += EXAMPLE_ADC_GET_DATA(p);
+                        sample_count_ch7++;
+                    }
                 }
-                if (sample_count > 0) {
-                    uint32_t average_raw = sum_raw / sample_count; // This is your "Multisampled" value    
-                    adc_cali_raw_to_voltage(cali_handle, average_raw, &calibrated_voltage);
-
+                if (sample_count_ch6 > 0) {
+                    adc_cali_raw_to_voltage(cali_handle, sum_raw_ch6 / sample_count_ch6, &calibrated_voltage);
                 }
-                
+                if (sample_count_ch7 > 0) {
+                    adc_cali_raw_to_voltage(cali_handle, sum_raw_ch7 / sample_count_ch7, &calibrated_voltage_ch7);
+                }
 
                 float node_voltage;
+                float input_voltage;
                 float pid_output;
                // float targetDutyCycle;
                 if (calibrated_voltage < ADC_NOISE_FLOOR_MV) {
@@ -250,12 +259,13 @@ void app_main(void)
                     //targetDutyCycle = round((1.0-(node_voltage / Voutput))*8191.0); // Calculate duty cycle based on voltage
                     
                 }
+                input_voltage = (calibrated_voltage_ch7 < ADC_NOISE_FLOOR_MV)? 0.0f   : (calibrated_voltage_ch7 * parallel_voltage_pd_multiplier / 1000.0f);
                                    
                 ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, (int)targetDutyCycle)); 
                 ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
                // ESP_LOGI(TAG, "Calibrated Voltage: %d mV , Node Voltage: %.2f V, with PWM Duty Cycle: %d", calibrated_voltage, node_voltage, targetDutyCycle);
-                ESP_LOGI(TAG, "CURRENT TIME: %"PRIu64" NODE VOLTAGE: %.2f V, PWM: %d, PID: %.2f, pid_integral: %.2f", current_time, node_voltage, (int)targetDutyCycle, pid_output, pid_integral);
-                vTaskDelay(1);
+                ESP_LOGI(TAG, "TIME: %"PRIu64" VIN: %.2f V, VOUT: %.2f V, PWM: %d, PID: %.2f, I: %.2f",current_time, input_voltage, node_voltage, (int)targetDutyCycle, pid_output, pid_integral);
+               vTaskDelay(1);
             } else if (ret == ESP_ERR_TIMEOUT) {
                 //We try to read `EXAMPLE_READ_LEN` until API returns timeout, which means there's no available data
                 break;

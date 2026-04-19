@@ -1,45 +1,6 @@
 # Regenerative Braking System
 
-## HOW TO USE REPO
-```
-regenerative-braking-system/
-│
-├── README.md
-├── LICENSE
-│
-├── docs/   --- detailed breakdown of subsystems
-│   ├── overview.md 
-│   ├── architecture.md
-│   ├── mechanical.md 
-│   ├── electrical.md
-│   ├── calculations.md
-│   └── results.md
-│
-├── software/   --- put all code here
-│   └── Small_State_Machine.ino 
-│
-├── hardware/
-│   ├── mechanical/
-│   │   ├── cad/
-│   │   └── images/
-│   │
-│   └── electrical/
-│       ├── circuit_schematics/
-│       └── images/
-│
-├── media/  --- only final prototype images go here
-│   ├── images/
-│   │   ├── setup.jpg
-│   │   ├── demo.jpg
-│   │   ├── system_architecture.png
-│   │   └── circuit.png
-│   │
-│   └── videos/
-│       └── demo.mp4
-│
-└── references/
-    └── papers.txt
-```
+![Team Picture](media/images/teampic.jpg) 
 
 ## Overview
 Regenerative braking is a key technology in electric vehicles that recovers kinetic energy during deceleration and converts it into usable electrical energy. Instead of dissipating energy as heat, this system improves overall efficiency, extends driving range, and reduces mechanical wear.
@@ -58,16 +19,12 @@ The system operates by switching a PMDC motor from motoring mode (electrical →
 ## Mechanical Design
 The mechanical system consists of a rotating wheel directly coupled to a PMDC motor. During braking, the kinetic energy of the rotating wheel is transferred to the motor shaft, causing it to act as a generator.
 
-![Image of mechanical]()
-
 For detailed design and considerations:
 - [Mechanical Design](docs\mech.md)
 
 
 ## Electrical Design
 The electrical subsystem switches the motor from driving mode or regenerative mode. During driving mode, users may control the acceleration of the motor. During regenerative mode, the AC voltage is rectified and boosted into a capacitor for storage.
-
-![image of electical circuit]()
 
 For full circuit design and explanation:
 - [Electrical Design](docs\elec.md)
@@ -88,7 +45,14 @@ Full Results:
 
 - [Results and Analysis](docs\results.md)
 
-## Demo
-[Images/videos]
+## Final Project
+
+![final project](media\images\final_project.jpg) 
+
 
 ## Future Improvements
+
+- Our system had some siginficant issues when connecting a low resistance load, namely the DC-DC converter will go into DCM mode, rendering our PID useless. A higher PWM freqency could be used to improve this.
+- Our mechanical design was tested with 6V instead of the rated 12V, due to saftey concerns, a more stable build is needed to test with higher speeds.
+- We had an issue with a wire burning up with no apparent reason, further analysis needed.
+- There was a lack of noticable breaking of the wheel. The wheel span for 20 seconds without regen, and around 18 seconds with regen. This may be due to the use of a high resistance load, causing less current being able to flow.
