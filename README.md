@@ -47,7 +47,7 @@ Full Results:
 
 ## Final Project
 
-![final project](media\images\final_project.jpg) 
+![final project](media/images/final_project.jpg) 
 
 
 ## Future Improvements
