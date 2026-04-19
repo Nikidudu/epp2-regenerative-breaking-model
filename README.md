@@ -8,7 +8,7 @@ Regenerative braking is a key technology in electric vehicles that recovers kine
 This project demonstrates a small-scale regenerative braking system that converts rotational kinetic energy into electrical energy using a DC motor as a generator, with energy stored for later use.
 
 ## Design Goals & Objectives
-The objective of this project is to design a regenerative braking system capable of converting kinetic energy into electrical energy during deceleration and storing it efficiently. The system aims to achieve an energy recovery efficiency of at least %, operate within a 12–24V range, and safely manage current flow using a controlled power electronic interface. Additional goals include ensuring system safety, minimising energy losses, and maintaining reliable operation under repeated braking conditions.
+The objective of this project is to design a regenerative braking system capable of converting kinetic energy into electrical energy during deceleration and storing it efficiently. The system aims to achieve an energy recovery efficiency of at least 50%, operate within a 12–24V range, and safely manage current flow using a controlled power electronic interface. Additional goals include ensuring system safety, minimising energy losses, and maintaining reliable operation under repeated braking conditions.
 
 
 ## System Architecture
