@@ -21,7 +21,7 @@ Energy flow in the system can be summarised as:
 
 The wheel stores kinetic energy, which is partially recovered during regenerative braking when the generator applies an opposing torque.
 
----
+ 
 
 ## 3. Key Components and Design Choices
 
@@ -35,7 +35,7 @@ However, due to its relatively low mass, the flywheel has low rotational inertia
 
 The wheel also came with a bearing attached to the centre bore, allowing for free motion between the shaft and wheel.
 
----
+ 
 
 ### 3.2 Shaft and Gears
 
@@ -45,7 +45,7 @@ The wheel also came with a bearing attached to the centre bore, allowing for fre
 - One gear is connected directly to the wheel, while the other is connected towards the motor. The gear ratio used is 1:2, with PLA material andpress fitted on the wheel and motor.
 - A motor bracket was used to secure the motor into place, using 6mm threaded inserts and screws into the supports.
 
----
+ 
 
 ### 3.3 Structural Frame
 
@@ -58,7 +58,7 @@ This resulted in:
 - Safety concerns when operating at the intended 12 V  
 - Restriction of testing to 6 V operation  
 
----
+ 
 
 ## 4. System Performance Analysis
 
@@ -68,7 +68,7 @@ The mechanical design directly influenced the experimental results.
 - The machine underwent heavy vibrating in higher RPMS. As a result, a human operator had to hold down the build while the wheel was spinning at high rpms, and we were capped at 6V operation.
 - The gears fit nicely with each other, with no gear interfearence observed. However, loud sounds were produced due to using spur gears.
 
----
+ 
 
 ## 5. Limitations of Current Design
 
@@ -81,7 +81,7 @@ The current mechanical design has several limitations:
 
 These limitations contributed to the reduced performance observed in the system.
 
----
+ 
 
 ## 6. Improvements and Future Work
 
@@ -94,7 +94,7 @@ Several improvements can be made to enhance the mechanical performance:
 
 These improvements would allow the system to operate at higher speeds and significantly enhance the effectiveness of regenerative braking.
 
----
+ 
 
 ## 7. Summary
 

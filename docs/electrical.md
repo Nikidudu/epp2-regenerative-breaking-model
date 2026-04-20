@@ -11,8 +11,6 @@ The key objectives were:
 - To safely manage current and voltage within system limits  
 - To interface with sensors and actuators for real-time control  
 
----
-
 ## 2. System Overview
 
 The electrical system consists of two main subsystems:
@@ -21,8 +19,6 @@ The electrical system consists of two main subsystems:
 2. **Power Conversion** – A boost converter steps up and regulates the generated voltage with a closed-loop control.
 
 ![System Overview](images/electrical.png)
-
----
 
 ## 3. Key Components and Design Choices
 
@@ -122,8 +118,6 @@ The controller continuously:
 3. Updates PID terms  
 4. Adjusts PWM duty cycle  
 
----
-
 ## 5. System Behaviour and Performance
 
 The system successfully maintained a stable output voltage of approximately **6.6 V for 15 seconds**, demonstrating effective closed-loop control.
@@ -138,14 +132,10 @@ Additionally:
 - Limited input voltage (due to low rotational speed) restricted overall system performance  
 - High resistance loads reduced current flow, limiting braking effectiveness  
 
----
-
 ## 6. Electrical Issues Encountered
 
 ### 6.1 DC-DC Converter Instability
 The converter became unstable under heavy load conditions due to transition into DCM. This caused the PID controller to behave unpredictably.
-
----
 
 ### 6.2 Wire Overheating
 A wire was observed to burn during operation, indicating excessive current or insufficient wire rating.
@@ -155,12 +145,8 @@ Possible causes include:
 - Lack of current limiting  
 - Unexpected current spikes  
 
----
-
 ### 6.3 Limited Power Transfer
 The system exhibited limited braking performance due to low current flow, which reduced electromagnetic braking torque.
-
----
 
 ## 7. Limitations of Current Design
 
@@ -170,8 +156,6 @@ The system exhibited limited braking performance due to low current flow, which 
 - Inefficient power transfer under certain load conditions  
 - Limited switching frequency affecting converter performance  
 
----
-
 ## 8. Improvements and Future Work
 
 - Increase PWM switching frequency to reduce DCM operation  
@@ -180,8 +164,6 @@ The system exhibited limited braking performance due to low current flow, which 
 - Improve component selection (MOSFET, inductor, wiring) for higher current handling  
 - Enable safe operation at **12 V** to improve performance  
 - Add filtering or compensation to improve stability  
-
----
 
 ## 9. Summary
 

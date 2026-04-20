@@ -5,7 +5,7 @@ The software portion of this project can be divided into two main components:
 - Small State Machine (User Input & System Control)
 - Boost Converter Feedback Loop (Voltage Regulation)
 
----
+ 
 
 ## Small State Machine
 
@@ -38,7 +38,7 @@ The system operates in three main states:
 
 This simple logic ensures that braking only occurs when required, preventing unnecessary energy dissipation and improving system control.
 
----
+ 
 
 ## Boost Converter Feedback Loop
 
@@ -54,7 +54,7 @@ The boost converter feedback loop is implemented on the ESP32 using a PID contro
 - Raw ADC values are averaged and calibrated to obtain accurate voltage readings
 - A voltage divider scaling factor is applied to reconstruct the actual voltage
 
----
+ 
 
 ### PID Control System
 
@@ -72,7 +72,7 @@ The control loop performs the following steps:
 
 The PWM signal is generated using the ESP32 LEDC module and drives the boost converter switching element.
 
----
+ 
 
 ### Control Features and Safeguards
 
@@ -81,7 +81,7 @@ The PWM signal is generated using the ESP32 LEDC module and drives the boost con
 - **Noise floor handling:** Resets control when voltage is too low  
 - **Dynamic timestep (dt):** Improves accuracy of derivative and integral calculations  
 
----
+ 
 
 ### System Behaviour
 
@@ -89,7 +89,7 @@ The PWM signal is generated using the ESP32 LEDC module and drives the boost con
 - When output voltage exceeds 6.6 V, the controller reduces duty cycle  
 - The system continuously adjusts in real time to maintain a stable output voltage  
 
----
+ 
 
 ## Summary
 
