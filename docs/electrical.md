@@ -15,50 +15,76 @@ The key objectives were:
 
 ## 2. System Overview
 
-The electrical system consists of three main subsystems:
+The electrical system consists of two main subsystems:
 
-1. **Energy Generation** – A motor operating as a generator converts mechanical rotation into electrical energy  
-2. **Power Conversion** – A boost converter steps up and regulates the generated voltage  
-3. **Control System** – An ESP32 microcontroller implements feedback control using ADC measurements and PWM output  
+1. **Acceleration and Braking Controller** – A system to control breaking and acceleration 
+2. **Power Conversion** – A boost converter steps up and regulates the generated voltage with a closed-loop control.
 
-The overall energy flow is:
-
-**Mechanical Energy → Generator → Boost Converter → Regulated Output Voltage**
+![System Overview](images/electrical.png)
 
 ---
 
 ## 3. Key Components and Design Choices
 
-### 3.1 Generator (DC Motor)
+## 3.1 Acceleration and Braking Controller (SSM)
 
-A DC motor is used as a generator to convert rotational energy into electrical energy via electromagnetic induction.
+### 3.1.1 Generator/DC Motor
 
-The generated voltage is proportional to rotational speed:
-- Higher speed → higher generated voltage  
-- Lower speed → lower generated voltage  
+![DC motor](images/DC_Motor.png)
+
+A RS-775-R 12V-24V DC motor is used as the generator and motor to convert rotational energy into electrical energy via electromagnetic induction and vice versa. The motor was chosen due to its high RPM capabilities with low torque.
+
+Since generated voltage is proportional to rotational speed, this would be suitable as the high RPMs allow us to observe these effects greatly. 
 
 This dependency directly affects the performance of the system, especially at lower operating voltages.
 
----
+### 3.1.2 Force sensor
 
-### 3.2 Boost Converter
+![force sensor](images/touch_sensor.png)
 
-A boost converter is used to step up the variable input voltage from the generator to a stable output voltage.
+A Round Force Sensor (FSR402) was used to simulate the accalerator pedal in cars. It works by increasing the resistance as more force is applied. 
+
+The connections are as follows:
+- Connected to a 3.3V high output pin in the esp32
+- Pulldown resistor on output to reduce noise and floating voltage
+- Input to a standard GPIO analog pin
+
+### 3.1.3 Relay and Button Switching
+
+![relay](images/relay.png)
+
+A standard relay with 5V switching was used to change between the modes of braking and non-braking. The relay switches to NO when the signal pin is put to ground, and NC otherwise.
+
+The connections are as follows:
+- The relay is grounded via a resistor to prevent current surge and floating voltages, this leaves the default state at NC, where this is in non-braking mode
+- One end of the button is put to the 5V high from the arduino
+- When the button is pressed, the signal wire from the relay is set to a 5V high, switching the relay circuit from non-braking to braking mode.
+- A voltage devider is used to split the voltage of 5V to 3.3V to allow the button status to be read digitally as well
+
+## 3.2 Power conversion
+
+### 3.2.1 Boost Converter
+
+![boost converter](images/boost_converter_elec.png)
+
+A standard boost converter was made to step up the variable input voltage from the generator to a stable output voltage.
 
 The converter operates using:
-- A switching element (controlled by PWM)  
+- A MOSFET controlled by PWM  
 - An inductor for energy storage  
 - A diode and capacitor for output smoothing  
 
 By adjusting the duty cycle of the PWM signal, the output voltage can be controlled.
 
----
-
-### 3.3 Voltage Sensing (ADC System)
+### 3.2.2 Voltage Sensing (ADC System)
 
 The ESP32 ADC operates in continuous sampling mode to measure:
 - Output voltage (Vout)  
 - Input voltage (Vin)  
+
+![voldev](images/voltage_devider.png)
+
+To measure these voltages, a voltage divider was used to scale the voltage readings to the 3.3V analog input in the esp32.
 
 Key features:
 - High-frequency sampling (~50 kHz)  
@@ -68,9 +94,7 @@ Key features:
 
 This enables accurate real-time feedback for the control system.
 
----
-
-### 3.4 PWM Control (LEDC Module)
+### 3.2.3 PWM Control (LEDC Module)
 
 The ESP32 LEDC module generates a PWM signal to control the boost converter.
 
@@ -81,8 +105,6 @@ The ESP32 LEDC module generates a PWM signal to control the boost converter.
 The duty cycle determines how much energy is transferred through the converter:
 - Higher duty cycle → higher output voltage  
 - Lower duty cycle → lower output voltage  
-
----
 
 ## 4. Control System (PID Controller)
 
